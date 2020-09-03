@@ -32,7 +32,16 @@ const articleSchema = new mongoose.Schema({
 // Article Model
 const Article = mongoose.model("Article", articleSchema);
 
-
+// Get All Articles
+app.get('/articles',function(req,res){
+    Article.find(function(err,foundArticles){
+        if(!err){
+            res.send(foundArticles);
+        }else{
+            res.send('Error Occured:'+err);
+        }
+    })
+});
 
 // Run Server
 app.listen(3000, function () {
