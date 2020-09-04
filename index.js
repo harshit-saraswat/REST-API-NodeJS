@@ -97,11 +97,24 @@ app.route('/articles/:articleTitle')
             }
         );
     })
+    // Patch a Specific Article
+    .patch(function (req, res) {
+        Article.update({ title: req.params.articleTitle },
+            { $set: req.body },
+            function (err) {
+                if (!err) {
+                    res.send("Successfully Updated the article");
+                } else {
+                    res.send('Error Occured:' + err);
+                }
+            }
+        );
+    })
     // Delete a Specific Article
     .delete(function (req, res) {
-        Article.deleteMany(function (err) {
+        Article.deleteOne({ title: req.params.articleTitle },function (err) {
             if (!err) {
-                res.send("Successfully Deleted all articles");
+                res.send("Successfully Deleted the corresponding article");
             } else {
                 res.send('Error Occured:' + err);
             }
