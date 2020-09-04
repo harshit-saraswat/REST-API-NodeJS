@@ -71,6 +71,44 @@ app.route('/articles')
         });
     });
 
+// articles/articleTitle route
+app.route('/articles/:articleTitle')
+    // Get Specific Article
+    .get(function (req, res) {
+        Article.findOne({ title: req.params.articleTitle }, function (err, foundArticle) {
+            if (foundArticle) {
+                res.send(foundArticle);
+            } else {
+                res.send('No Articles found for given title');
+            }
+        });
+    })
+    // Put a Specific Article
+    .put(function (req, res) {
+        Article.update({ title: req.params.articleTitle },
+            { title: req.body.title, content: req.body.content },
+            { overwrite: true },
+            function (err) {
+                if (!err) {
+                    res.send("Successfully Updated the article");
+                } else {
+                    res.send('Error Occured:' + err);
+                }
+            }
+        );
+    })
+    // Delete a Specific Article
+    .delete(function (req, res) {
+        Article.deleteMany(function (err) {
+            if (!err) {
+                res.send("Successfully Deleted all articles");
+            } else {
+                res.send('Error Occured:' + err);
+            }
+        });
+    });
+
+
 
 // Run Server
 app.listen(3000, function () {
