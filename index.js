@@ -32,44 +32,45 @@ const articleSchema = new mongoose.Schema({
 // Article Model
 const Article = mongoose.model("Article", articleSchema);
 
-// Get All Articles
-app.get('/articles',function(req,res){
-    Article.find(function(err,foundArticles){
-        if(!err){
-            res.send(foundArticles);
-        }else{
-            res.send('Error Occured:'+err);
-        }
+// articles route
+app.route('/articles')
+    // Get All Articles
+    .get(function (req, res) {
+        Article.find(function (err, foundArticles) {
+            if (!err) {
+                res.send(foundArticles);
+            } else {
+                res.send('Error Occured:' + err);
+            }
+        });
+    })
+    // Post New Article
+    .post(function (req, res) {
+        const title = req.body.title;
+        const content = req.body.content;
+        const newArticle = new Article({
+            title: title,
+            content: content
+        });
+        newArticle.save(function (err) {
+            if (!err) {
+                res.send("Successfully Added a new article");
+            } else {
+                res.send('Error Occured:' + err);
+            }
+        });
+    })
+    // Delete all Articles
+    .delete(function (req, res) {
+        Article.deleteMany(function (err) {
+            if (!err) {
+                res.send("Successfully Deleted all articles");
+            } else {
+                res.send('Error Occured:' + err);
+            }
+        });
     });
-});
 
-// Post New Article
-app.post('/articles',function(req,res){
-    const title=req.body.title;
-    const content=req.body.content;
-    const newArticle = new Article({
-        title:title,
-        content:content
-    });
-    newArticle.save(function(err){
-        if(!err){
-            res.send("Successfully Added a new article");
-        }else{
-            res.send('Error Occured:'+err);
-        }
-    });
-});
-
-// Delete all Articles
-app.delete('/articles',function(req,res){
-    Article.deleteMany(function(err){
-        if(!err){
-            res.send("Successfully Deleted all articles");
-        }else{
-            res.send('Error Occured:'+err);
-        }
-    });
-});
 
 // Run Server
 app.listen(3000, function () {
