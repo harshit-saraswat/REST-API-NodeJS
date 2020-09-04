@@ -60,6 +60,17 @@ app.post('/articles',function(req,res){
     });
 });
 
+// Delete all Articles
+app.delete('/articles',function(req,res){
+    Article.deleteMany(function(err){
+        if(!err){
+            res.send("Successfully Deleted all articles");
+        }else{
+            res.send('Error Occured:'+err);
+        }
+    });
+});
+
 // Run Server
 app.listen(3000, function () {
     console.log("Server Started at port 3000.");
