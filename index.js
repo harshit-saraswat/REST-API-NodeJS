@@ -40,7 +40,24 @@ app.get('/articles',function(req,res){
         }else{
             res.send('Error Occured:'+err);
         }
-    })
+    });
+});
+
+// Post New Article
+app.post('/articles',function(req,res){
+    const title=req.body.title;
+    const content=req.body.content;
+    const newArticle = new Article({
+        title:title,
+        content:content
+    });
+    newArticle.save(function(err){
+        if(!err){
+            res.send("Successfully Added a new article");
+        }else{
+            res.send('Error Occured:'+err);
+        }
+    });
 });
 
 // Run Server
